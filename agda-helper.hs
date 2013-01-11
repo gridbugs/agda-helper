@@ -30,12 +30,23 @@ interleave [] _ = []
 interleave _ [] = []
 interleave (x:xs) (y:ys) = x:y:(interleave xs ys)
 
-
+usage :: IO ()
+usage = do
+            putStrLn "Usage: agda-helper file.agda                  # interactive shell"
+            putStrLn "       agda-helper file.agda -t expression    # infer type of expression"
+            putStrLn "       agda-helper file.agda expression       # evaluate expression"
+            putStrLn "\nInteractive mode commands:"
+            putStrLn ":r                - reloads the agda file"
+            putStrLn ":t expression     - infers the type of the agda expression in the context of the loaded agda file"
+            putStrLn "expression        - evalates the agda expression in the context of the loaded agda file"
 main :: IO ()
 main = do
             
             args <- getArgs
             case args of 
+                [] -> usage
+                "-h":_ -> usage
+                "--help":_ -> usage
                 [agdaFile] -> do
                                 loadAgdaFile agdaFile
                                 loop $ agdaFile
